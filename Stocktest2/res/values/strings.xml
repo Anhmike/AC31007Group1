@@ -1,8 +1,12 @@
 <resources>
 
+    <!-- App stuff -->
     <string name="app_name">Stocktest2</string>
-    <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
+    
+    <!-- UI strings -->
+	<string name="Prototype_Button_Text">Press to get test quote...</string>
+
 
 </resources>
