@@ -8,10 +8,21 @@
         android:id="@+id/getQuoteButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/Prototype_Button_Text" />
+        android:text="Get Tesco Share Price" />
 
     <TextView
         android:id="@+id/textOutput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    
+    <Button
+        android:id="@+id/getTotal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Get Total Portfolio" />
+
+    <TextView
+        android:id="@+id/textTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
