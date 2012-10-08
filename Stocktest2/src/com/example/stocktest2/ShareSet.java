@@ -5,19 +5,19 @@ import java.util.Date;
 
 public class ShareSet 
 {
-	String companyTicker;
-	String companyName;//
-	int sharesOwned;//
-	long sharesVolume;//
-	double currentPrice;//
-	double previousClosePrice;//
-	long previousCloseSharesVolume;//
-	double weeklyHigh;//
-	double weeklyLow;//
-	double total;//
-	double previousFridayTotal;
-	String priceChange;
-	String LTtime;
+	private String companyTicker;
+	private String companyName;//
+	private int sharesOwned;//
+	private long sharesVolume;//
+	private double currentPrice;//
+	private double previousClosePrice;//
+	private long previousCloseSharesVolume;//
+	private double weeklyHigh;//
+	private double weeklyLow;//
+	private double total;//
+	private double previousFridayTotal;
+	private String priceChange;
+	private String LTtime;
 	
 	
     // Constructor for creating a new object

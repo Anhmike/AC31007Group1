@@ -6,7 +6,8 @@
     <string name="title_activity_main">MainActivity</string>
     
     <!-- UI strings -->
-	<string name="Prototype_Button_Text">Press to get test quote...</string>
+	<string name="Test_Button_Text">Get Tesco Share Price</string>
+	<string name="Total_Value_Button_Text">Get Total Portfolio Value</string>
 
 
 </resources>

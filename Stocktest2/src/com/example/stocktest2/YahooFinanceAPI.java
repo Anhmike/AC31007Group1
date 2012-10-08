@@ -63,7 +63,7 @@ public class YahooFinanceAPI
 			//Tidy up corresponding fields
 			String stockSymbol = rawTokens[0].substring(1, rawTokens[0].length() - 1);	//Stock symbol (1st element) with removed "" quotation marks
 			String stockTime = rawTokens[1].substring(1, rawTokens[1].length() - 3);	//Stock Time (2nd element) with removed "" quotation marks and 'Periods' (am/pm)
-			String stockPrice = rawTokens[2];
+			String stockPrice = String.valueOf(Double.parseDouble(rawTokens[2]) / 100);	//Divide by 100 to get in pounds £
 			
 			//Compensate stock time for US time-zone
 			String[] sub = stockTime.split(":");
@@ -125,11 +125,11 @@ public class YahooFinanceAPI
 			
 			//Tidy up corresponding fields
 			String stockTime = timeParsing(rawTokens[0].substring(1, rawTokens[0].length() - 3));	//Stock trade time (1st element) with removed "" quotation marks and 'Periods' (am/pm)
-			Double stockPrice = Double.parseDouble(rawTokens[1]); // Parse the price as Double
-			Double dailyHigh = Double.parseDouble(rawTokens[2]);  // Parse the daily high as Double
-			Double dailyLow = Double.parseDouble(rawTokens[3]);  // Parse the daily low as Double
+			Double stockPrice = Double.parseDouble(rawTokens[1]) / 100;	//Divide by 100 to get in pounds £
+			Double dailyHigh = Double.parseDouble(rawTokens[2]) / 100;  // Parse the daily high as Double
+			Double dailyLow = Double.parseDouble(rawTokens[3]) / 100;  // Parse the daily low as Double
 			Long volume = Long.parseLong(rawTokens[4]);
-			Double prevPrice = Double.parseDouble(rawTokens[5]);
+			Double prevPrice = Double.parseDouble(rawTokens[5]) / 100;
 			String change = rawTokens[6].substring(1, rawTokens[6].length() - 1);
 			
 			object.setShareSet(stockTime, stockPrice, dailyHigh, dailyLow, volume, prevPrice, change);

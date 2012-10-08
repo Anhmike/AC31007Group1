@@ -30,7 +30,8 @@ public final class R {
     public static final class string {
         /**  UI strings 
          */
-        public static final int Prototype_Button_Text=0x7f040003;
+        public static final int Test_Button_Text=0x7f040003;
+        public static final int Total_Value_Button_Text=0x7f040004;
         /**  App stuff 
          */
         public static final int app_name=0x7f040000;

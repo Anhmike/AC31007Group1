@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.view.View;
 import android.widget.*;
 
@@ -15,14 +17,16 @@ import android.widget.*;
 @TargetApi(7)
 public class MainActivity extends Activity 
 {
-	YahooFinanceAPI financeAPI;
-	TextView txtOutput;
-	Button btnFetch;
+	//YahooFinanceAPI financeAPI;
+	private TextView txtOutput;
+	private Button btnFetch;
 	
-	TextView txtTotal;
-	Button btnTotal;
+	private TextView txtTotal;
+	private Button btnTotal;
 	
-	ShareSetsModel PORTFOLIO = new ShareSetsModel();
+	private ProgressDialog dialog;
+	
+	private ShareSetsModel portfolio = new ShareSetsModel();
 	
 		
     @Override
@@ -33,15 +37,8 @@ public class MainActivity extends Activity
         
         //UI stuff.
         txtOutput = (TextView)findViewById(R.id.textOutput);
-        
-        //UI button behaviour.
         btnFetch = (Button)findViewById(R.id.getQuoteButton);
-        
-        //UI stuff.
         txtTotal = (TextView)findViewById(R.id.textTotal);
-
-        
-        //UI button behaviour.
         btnTotal = (Button)findViewById(R.id.getTotal);
         
         //Overriding OnClick behaviour with my own method.
@@ -77,11 +74,42 @@ public class MainActivity extends Activity
 			public void onClick(View v)
 			{
 				
+				//Set up "Loading" dialog
+				dialog = ProgressDialog.show(MainActivity.this, "Please Wait...",
+                        "Fetching Stock Market Data...", true);
+
+				//Fetch share data on another thread capable of updating the UI.
+				new AsyncTask<String, Integer, String>()
+				{
+
+		            @Override
+		            protected void onProgressUpdate(Integer... progress)
+		            {
+		                super.onProgressUpdate(progress);
+		            }
+
+
+		            @Override
+		            protected String doInBackground(String... arg0)
+		            {
+		                return portfolio.calculatePortfolio();
+
+		            }
+
+		            @Override
+		            protected void onPostExecute(String result)
+		            {
+		            	dialog.dismiss();
+		            	txtTotal.setText(result);
+		            }
+
+				}.execute("");
+				
 				//Disable the button
 				btnTotal.setEnabled(false);
 				
-				String text = PORTFOLIO.calculatePortfolio();
-				txtTotal.setText(text);
+				
+				
 				
 				//Enable the button again
 				btnTotal.setEnabled(true);
