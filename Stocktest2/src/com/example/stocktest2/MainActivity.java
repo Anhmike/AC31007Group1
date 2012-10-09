@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.annotation.TargetApi;
@@ -47,6 +48,8 @@ public class MainActivity extends Activity
 			
 			public void onClick(View v)
 			{
+				if (!checkInternetConnection())
+					Toast.makeText(MainActivity.this, "Internet Access Required...", Toast.LENGTH_SHORT).show();
 				
 				//Asks the Yahoo! Finance API to fetch the data for the passed company ticker.
 				//TODO: Replace string literal with list of companies in portfolio
@@ -66,6 +69,7 @@ public class MainActivity extends Activity
 			}
 			
 		});
+    
         
        //Overriding OnClick behaviour with my own method.
         btnTotal.setOnClickListener(new View.OnClickListener()
@@ -73,7 +77,9 @@ public class MainActivity extends Activity
 			
 			public void onClick(View v)
 			{
-				
+				if (!checkInternetConnection())
+					Toast.makeText(MainActivity.this, "Internet Access Required...", Toast.LENGTH_SHORT).show();
+
 				//Set up "Loading" dialog
 				dialog = ProgressDialog.show(MainActivity.this, "Please Wait...",
                         "Fetching Stock Market Data...", true);
@@ -116,8 +122,21 @@ public class MainActivity extends Activity
 			}
 			
 		});
-        
     }
+        
+        
+    public boolean checkInternetConnection()
+    {
+        //Check for internet access
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        if (cm.getActiveNetworkInfo().isConnectedOrConnecting() == false)
+        {
+        	return false;
+        }	
+        return true;
+    }
+    
+    
     
 }
 
