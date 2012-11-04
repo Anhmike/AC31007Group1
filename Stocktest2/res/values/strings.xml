@@ -8,6 +8,8 @@
     <!-- UI strings -->
 	<string name="Test_Button_Text">Get Tesco Share Price</string>
 	<string name="Total_Value_Button_Text">Get Total Portfolio Value</string>
+	<string name="TestHistoryText">Get TESCO History Text</string>
+	<string name="TestHistoryYQL">Get TESCO YQL History</string>
 
 
 </resources>

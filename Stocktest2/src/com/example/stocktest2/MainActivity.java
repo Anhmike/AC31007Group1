@@ -22,6 +22,12 @@ public class MainActivity extends Activity
 	private TextView txtOutput;
 	private Button btnFetch;
 	
+	private TextView txtHistory1Output;
+	private Button btnHistory1Fetch;
+	
+	private TextView txtHistory2Output;
+	private Button btnHistory2Fetch;
+	
 	private TextView txtTotal;
 	private Button btnTotal;
 	
@@ -39,6 +45,10 @@ public class MainActivity extends Activity
         //UI stuff.
         txtOutput = (TextView)findViewById(R.id.textOutput);
         btnFetch = (Button)findViewById(R.id.getQuoteButton);
+        txtHistory1Output = (TextView)findViewById(R.id.textHistory);
+        btnHistory1Fetch = (Button)findViewById(R.id.getHistoryText);
+        txtHistory2Output = (TextView)findViewById(R.id.YQLHistory);
+        btnHistory2Fetch = (Button)findViewById(R.id.getHistoryYQL);
         txtTotal = (TextView)findViewById(R.id.textTotal);
         btnTotal = (Button)findViewById(R.id.getTotal);
         
@@ -52,7 +62,6 @@ public class MainActivity extends Activity
 					Toast.makeText(MainActivity.this, "Internet Access Required...", Toast.LENGTH_SHORT).show();
 				
 				//Asks the Yahoo! Finance API to fetch the data for the passed company ticker.
-				//TODO: Replace string literal with list of companies in portfolio
 				String[] cvsFields = YahooFinanceAPI.getInstance().fetchAndParse("TSCO");					
 				
 				//Rename CVS fields from token array
@@ -65,11 +74,38 @@ public class MainActivity extends Activity
 
 				//send these "words" to the UI text fields.
 				txtOutput.setText("\nThe stock price for Tesco (\"" + stockSymbol + "\") is \u00A3" + stockPrice + " (rounded \u00A3" + roundedStockTime + ") at " + stockTime + ".");
-				
+
 			}
 			
 		});
     
+        btnHistory1Fetch.setOnClickListener(new View.OnClickListener()
+        {
+			
+			public void onClick(View v)
+			{
+				if (!checkInternetConnection())
+					Toast.makeText(MainActivity.this, "Internet Access Required...", Toast.LENGTH_SHORT).show();
+				
+				txtHistory1Output.setText(YahooFinanceAPI.getInstance().fetchAndParseHistory("TSCO"));
+				
+			}
+			
+		});
+        
+        btnHistory2Fetch.setOnClickListener(new View.OnClickListener()
+        {
+			
+			public void onClick(View v)
+			{
+				if (!checkInternetConnection())
+					Toast.makeText(MainActivity.this, "Internet Access Required...", Toast.LENGTH_SHORT).show();
+				
+				txtHistory2Output.setText(YahooFinanceAPI.getInstance().fetchAndParseYQLHistory("TSCO"));
+				
+			}
+			
+		});
         
        //Overriding OnClick behaviour with my own method.
         btnTotal.setOnClickListener(new View.OnClickListener()

@@ -2,11 +2,39 @@ package com.example.stocktest2;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.net.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
-import org.apache.http.util.ByteArrayBuffer;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.apache.http.HttpConnection;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.*;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.*;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.*;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+import org.w3c.dom.NodeList;
+import org.xml.sax.ContentHandler;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import android.sax.Element;
+import android.util.Log;
+import android.util.Xml;
 
 
 //Singleton boundary class representing the remote Yahoo! Finance API
@@ -32,7 +60,7 @@ public class YahooFinanceAPI
 			return instance;
 	}
 	
-	public String[] fetchAndParse(String companyTicker) //ShareSet object
+	public String[] fetchAndParse(String companyTicker)
 	{
 		URL url;	//URL object to access Yahoo! Finance
 		try 
@@ -159,4 +187,145 @@ public class YahooFinanceAPI
 		return (Integer.toString(first) + ":" + sub[1]);
 	}
 
+	public String getLastFriday()
+	{
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.WEEK_OF_YEAR, -1);
+        cal.set(Calendar.DAY_OF_WEEK, cal.FRIDAY);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        return  sdf.format(cal.getTime());    
+    }
+	
+	/****************************
+	 * Method to get the historical data using ichart URL - returns the content of the ichart query ,
+	 * thus the data needed in a string, which could be parsed
+	 * 
+	 * e.g. ichart query: 
+	 * http://ichart.finance.yahoo.com/table.csv?s=TSCO.L&a=09&b=26&c=2012&d=09&e=26&f=2012&g=d&ignore=.csv
+	 * 
+	 * Check Out This here:
+	 * http://code.google.com/p/yahoo-finance-managed/wiki/csvHistQuotesDownload
+	 * 
+	 * @param companyTicker
+	 * @return
+	 */
+	public String fetchAndParseHistory(String companyTicker)
+	{
+		try 
+		{
+			String[] dateTokens = (getLastFriday().split("-"));
+			int month = ( Integer.parseInt(dateTokens[1]) - 1);
+			
+			String url_text ="http://ichart.finance.yahoo.com/table.csv?s=" + companyTicker + 
+					".L&a="+ month +"&b="+dateTokens[0]+"&c="+dateTokens[2]+"&d="+ month +"&e="+dateTokens[0]+"&f="+dateTokens[2]+"&g=d&ignore=.csv"; 
+			
+			 HttpClient client = new DefaultHttpClient();
+			 HttpGet request = new HttpGet(url_text);
+             // Get the response
+             ResponseHandler<String> responseHandler = new BasicResponseHandler();
+             String response_str = client.execute(request, responseHandler);
+             
+             return (url_text + "\n"+ response_str);
+		} 
+		catch (MalformedURLException e) 
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		//Exception will have been called at this point
+		//Return null, so client can take appropriate action
+		return null;
+	}
+	
+	
+	/********************
+	 * Method to get the historical data using YQL - returning a string representing the content of the 
+	 * XML or JSON file returned from the query.
+	 * 
+	 * URL got from here:
+	 * http://developer.yahoo.com/yql/console/?q=SELECT+%2A+FROM+yahoo.finance.quotes+WHERE+symbol%3D%22RBS.L%22%0A%09%09&env=http%3A%2F%2Fdatatables.org%2Falltables.env#h=SELECT%20*%20FROM%20yahoo.finance.historicaldata%20WHERE%20startDate%3D%222012-10-26%22%20AND%20symbol%3D%22TSCO.L%22%20AND%20endDate%3D%222012-10-26%22%0A%09%09
+	 * 
+	 * 
+	 * @param companyTicker
+	 * @return
+	 */
+	public String fetchAndParseYQLHistory(String companyTicker)
+	{
+		try 
+		{
+			 /***********************************
+			  * XML file return using YQL query in URL
+			  */
+			 String date = getLastFriday();
+			
+			 String url_text = "http://query.yahooapis.com/v1/public/yql?q=SELECT%20*%20FROM%20yahoo.finance.historicaldata%20WHERE%20startDate%3D%22"+
+			 date +"%22%20AND%20symbol%3D%22"+ companyTicker +".L%22%20AND%20endDate%3D%22"+
+			 date +"%22%0A%09%09&diagnostics=true&env=http%3A%2F%2Fdatatables.org%2Falltables.env";
+			 
+			 HttpClient client = new DefaultHttpClient();
+			 HttpGet request = new HttpGet(url_text);
+             // Get the response
+             ResponseHandler<String> responseHandler = new BasicResponseHandler();
+             String content = client.execute(request,responseHandler);
+
+			 
+             /* **********************************************************************
+			  * XML file return - Try to parse with NameValuePairs
+			  * 
+	  		 String high = "";
+             String low = "";
+             String close = "";
+             String volume = "";
+             
+				// Add post data
+				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+				nameValuePairs.add(new BasicNameValuePair("High", high));
+				nameValuePairs.add(new BasicNameValuePair("Low", low));
+				nameValuePairs.add(new BasicNameValuePair("Close", close));
+				nameValuePairs.add(new BasicNameValuePair("Volume", volume));
+				
+				request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				
+				// Execute HTTP Post Request
+				content = client.execute(request, responseHandler);	
+			 
+				******************************************************************/
+			 
+             
+             
+             
+			 /**************************************************************************
+			  * JSON file returned from YQL query in URL
+			  * 
+             String url = "http://query.yahooapis.com/v1/public/yql?q=SELECT%20*%20FROM%20yahoo.finance.historicaldata%20WHERE%20startDate%3D%22"+date
+            		 +"%22%20AND%20symbol%3D%22"+companyTicker+".L%22%20AND%20endDate%3D%22"+date
+            		 +"%22%0A%09%09&format=json&diagnostics=true&env=http%3A%2F%2Fdatatables.org%2Falltables.env";
+
+			 HttpClient client = new DefaultHttpClient();
+			 HttpGet request = new HttpGet(url);
+             // Get the response
+             ResponseHandler<String> responseHandler = new BasicResponseHandler();
+             String content = client.execute(request,responseHandler);
+             
+             ************************************************************************************/
+			 
+             
+             return (content);
+
+		}
+		catch (IOException e) 
+		{
+            e.printStackTrace();
+        }
+		
+		//Exception will have been called at this point
+		//Return null, so client can take appropriate action
+		return null;
+	}
 }
