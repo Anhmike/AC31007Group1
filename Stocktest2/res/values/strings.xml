@@ -3,13 +3,13 @@
     <!-- App stuff -->
     <string name="app_name">Stocktest2</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Stock Monitor</string>
     
     <!-- UI strings -->
-	<string name="Test_Button_Text">Get Tesco Share Price</string>
-	<string name="Total_Value_Button_Text">Get Total Portfolio Value</string>
-	<string name="TestHistoryText">Get TESCO History Text</string>
-	<string name="TestHistoryYQL">Get TESCO YQL History</string>
+	<string name="Test_Button_Text">TESCO Price</string>
+	<string name="Total_Value_Button_Text">Total Portfolio</string>
+	<string name="TestHistoryText">Text History</string>
+	<string name="TestHistoryYQL">YQL History</string>
 
 
 </resources>

@@ -22,13 +22,10 @@ public class MainActivity extends Activity
 	private TextView txtOutput;
 	private Button btnFetch;
 	
-	private TextView txtHistory1Output;
 	private Button btnHistory1Fetch;
 	
-	private TextView txtHistory2Output;
 	private Button btnHistory2Fetch;
 	
-	private TextView txtTotal;
 	private Button btnTotal;
 	
 	private ProgressDialog dialog;
@@ -45,11 +42,8 @@ public class MainActivity extends Activity
         //UI stuff.
         txtOutput = (TextView)findViewById(R.id.textOutput);
         btnFetch = (Button)findViewById(R.id.getQuoteButton);
-        txtHistory1Output = (TextView)findViewById(R.id.textHistory);
         btnHistory1Fetch = (Button)findViewById(R.id.getHistoryText);
-        txtHistory2Output = (TextView)findViewById(R.id.YQLHistory);
         btnHistory2Fetch = (Button)findViewById(R.id.getHistoryYQL);
-        txtTotal = (TextView)findViewById(R.id.textTotal);
         btnTotal = (Button)findViewById(R.id.getTotal);
         
         //Overriding OnClick behaviour with my own method.
@@ -87,7 +81,19 @@ public class MainActivity extends Activity
 				if (!checkInternetConnection())
 					Toast.makeText(MainActivity.this, "Internet Access Required...", Toast.LENGTH_SHORT).show();
 				
-				txtHistory1Output.setText(YahooFinanceAPI.getInstance().fetchAndParseHistory("TSCO"));
+				/*
+				 * Date = 0
+				 * Open = 1
+				 * High = 2
+				 * Low = 3
+				 * Close = 3
+				 * Volume = 4
+				 * Adj Close = 5
+				 * 
+				 */
+				
+				
+				txtOutput.setText(YahooFinanceAPI.getInstance().fetchAndParseHistory("TSCO"));
 				
 			}
 			
@@ -101,7 +107,7 @@ public class MainActivity extends Activity
 				if (!checkInternetConnection())
 					Toast.makeText(MainActivity.this, "Internet Access Required...", Toast.LENGTH_SHORT).show();
 				
-				txtHistory2Output.setText(YahooFinanceAPI.getInstance().fetchAndParseYQLHistory("TSCO"));
+				txtOutput.setText(YahooFinanceAPI.getInstance().fetchAndParseYQLHistory("TSCO"));
 				
 			}
 			
@@ -142,7 +148,7 @@ public class MainActivity extends Activity
 		            protected void onPostExecute(String result)
 		            {
 		            	dialog.dismiss();
-		            	txtTotal.setText(result);
+		            	txtOutput.setText(result);
 		            }
 
 				}.execute("");

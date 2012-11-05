@@ -27,6 +27,17 @@ public class ShareSetsModel
 		SHARES[4] = new ShareSet("Smith & Nephew", 1219, "SN");
 	}
 	
+	
+	/*
+	 * Date = 0
+	 * Open = 1
+	 * High = 2
+	 * Low = 3
+	 * Close = 3
+	 * Volume = 4
+	 * Adj Close = 5
+	 * 
+	 */
 	public String calculatePortfolio()
 	{
 		String text = "";
@@ -62,6 +73,26 @@ public class ShareSetsModel
 		
 		return text;
 	}
+	
+	/*
+	public String calculateFridayPortfolio()
+	{
+		String text = "";
+		
+		double totalPortfolio = 0;
+		
+		for (int i=0; i<SHARES.length; i++)
+		{
+			YahooFinanceAPI.getInstance().fetchAndParseHistoryObject(SHARES[i]);
+			totalPortfolio += SHARES[i].getTotal();
+		}
+		
+		
+		text = text + "\nThe total worth of your portfolio was \u00A3" + Math.round(totalPortfolio) + " at the close of the stock market on " + "" + "h.";
+		
+		return text;
+	}
+    */
 	
 	public String calculateLossGain()
 	{

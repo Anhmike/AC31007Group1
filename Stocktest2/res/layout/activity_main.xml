@@ -2,52 +2,126 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent" 
+    android:background="#d3a45e">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:paddingTop="20dp">
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/getHistoryText"
+                android:padding="10dp"
+                android:width="120dp" 
+                android:height="120dp"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/round_button"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/TestHistoryText"
+                android:textColor="#f3bf7f"
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/getHistoryText"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/TestHistoryText" />
-    
-    <TextView
-        android:id="@+id/textHistory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/getHistoryYQL"
+                android:padding="10dp"
+                android:width="120dp" 
+                android:height="120dp"
+                android:layout_margin="10dp"
+                android:layout_gravity="center"
+                android:background="@drawable/round_button"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/TestHistoryYQL"
+                android:textColor="#f3bf7f"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+            <Button
+                android:id="@+id/getQuoteButton"
+                android:padding="10dp"
+                android:width="120dp" 
+                android:height="120dp"
+                android:layout_margin="10dp"
+                android:layout_gravity="center"
+                android:background="@drawable/round_button"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/Test_Button_Text"
+                android:textColor="#f3bf7f" 
+                android:textSize="20dp" 
+                android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/getHistoryYQL"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/TestHistoryYQL" />
-    
-    <TextView
-        android:id="@+id/YQLHistory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    
-    <Button
-        android:id="@+id/getQuoteButton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/Test_Button_Text" />
-    
+            <Button
+                android:id="@+id/getTotal"
+                android:padding="10dp"
+                android:width="120dp" 
+                android:height="120dp"
+                android:layout_margin="10dp"
+                android:layout_gravity="center"
+                android:background="@drawable/round_button"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/Total_Value_Button_Text"
+                android:textColor="#f3bf7f" 
+                android:textSize="20dp" 
+                android:textStyle="bold" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/getHistory"
+                android:padding="10dp"
+                android:width="120dp" 
+                android:height="120dp"
+                android:layout_margin="10dp"
+                android:layout_gravity="center"
+                android:background="@drawable/round_button"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/TestHistoryText"
+                android:textColor="#f3bf7f" 
+                android:textSize="20dp" 
+                android:textStyle="bold" />
+
+
+            <Button
+                android:id="@+id/getYQL"
+                android:padding="10dp"
+                android:width="120dp" 
+                android:height="120dp"
+                android:layout_margin="10dp"
+                android:layout_gravity="center"
+                android:background="@drawable/round_button"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/TestHistoryYQL"
+                android:textColor="#f3bf7f"
+                android:textSize="20dp" 
+                android:textStyle="bold" />
+
+        </TableRow>
+        
+        
+    </TableLayout>
+
     <TextView
         android:id="@+id/textOutput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/getTotal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/Total_Value_Button_Text" />
-    
-    <TextView
-        android:id="@+id/textTotal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
 </LinearLayout>
 
 

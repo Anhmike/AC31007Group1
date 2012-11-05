@@ -227,7 +227,9 @@ public class YahooFinanceAPI
              ResponseHandler<String> responseHandler = new BasicResponseHandler();
              String response_str = client.execute(request, responseHandler);
              
-             return (url_text + "\n"+ response_str);
+             
+             
+             return parseTextHistory(response_str);
 		} 
 		catch (MalformedURLException e) 
 		{
@@ -244,6 +246,36 @@ public class YahooFinanceAPI
 	}
 	
 	
+	/*public String fetchAndParseHistoryObject(ShareSet object)
+	{
+		try 
+		{
+			String[] dateTokens = (getLastFriday().split("-"));
+			int month = ( Integer.parseInt(dateTokens[1]) - 1);
+			
+			String url_text ="http://ichart.finance.yahoo.com/table.csv?s=" + "" + 
+					".L&a="+ month +"&b="+dateTokens[0]+"&c="+dateTokens[2]+"&d="+ month +"&e="+dateTokens[0]+"&f="+dateTokens[2]+"&g=d&ignore=.csv"; 
+			
+			 HttpClient client = new DefaultHttpClient();
+			 HttpGet request = new HttpGet(url_text);
+             // Get the response
+             ResponseHandler<String> responseHandler = new BasicResponseHandler();
+             String response_str = client.execute(request, responseHandler);
+             
+             
+             
+             return parseTextHistory(response_str);
+		} 
+		catch (MalformedURLException e) 
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	*/
 	/********************
 	 * Method to get the historical data using YQL - returning a string representing the content of the 
 	 * XML or JSON file returned from the query.
@@ -328,4 +360,14 @@ public class YahooFinanceAPI
 		//Return null, so client can take appropriate action
 		return null;
 	}
+
+	public String parseTextHistory(String text)
+	{
+		String [] lines = text.split("\n");
+		String [] data = lines[1].split(",");
+
+		return lines[1];
+	}
 }
+
+
