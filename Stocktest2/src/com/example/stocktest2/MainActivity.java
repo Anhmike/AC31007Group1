@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.pm.ActivityInfo;
 import android.view.View;
 import android.widget.*;
 
@@ -38,6 +39,7 @@ public class MainActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);	//Set layout from xml file
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);	//Forces portrait orientation
         
         //UI stuff.
         txtOutput = (TextView)findViewById(R.id.textOutput);

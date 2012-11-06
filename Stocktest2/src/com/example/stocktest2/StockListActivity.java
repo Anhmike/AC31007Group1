@@ -22,7 +22,7 @@ import android.widget.Toast;
 public class StockListActivity extends ListActivity
 {
 
-    private String[] listItems;
+    private ShareSet[] listItems;
     private ProgressDialog dialog;
     
 
@@ -66,7 +66,7 @@ public class StockListActivity extends ListActivity
                 dialog.dismiss();
                 
                     //Set up a UI List
-                setListAdapter(new ArrayAdapter<String>(StockListActivity.this, R.layout.list_item, listItems));
+                setListAdapter(new ArrayAdapter<ShareSet>(StockListActivity.this, R.layout.list_item, listItems));
                 ListView lv = getListView();
                 lv.setTextFilterEnabled(true);
 

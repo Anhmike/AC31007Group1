@@ -10,6 +10,7 @@
 	<string name="Total_Value_Button_Text">Total Portfolio</string>
 	<string name="TestHistoryText">Text History</string>
 	<string name="TestHistoryYQL">YQL History</string>
+	<string name="list_activity_name">Portfolio Summary</string>
 
 
 </resources>

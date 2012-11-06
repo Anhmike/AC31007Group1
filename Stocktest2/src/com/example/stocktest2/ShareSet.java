@@ -198,4 +198,11 @@ public class ShareSet
     		else return 0; // Insufficient change for alert
     	}
     }
+    
+    //Returns a Stock as a specially formatted string
+    public String toString()
+    {
+    	return (companyTicker + "\t" + total);
+    	
+    }
 }

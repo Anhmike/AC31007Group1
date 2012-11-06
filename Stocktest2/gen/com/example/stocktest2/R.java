@@ -30,6 +30,7 @@ public final class R {
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
+        public static final int list_item=0x7f030001;
     }
     public static final class menu {
         public static final int activity_main=0x7f060000;
@@ -44,6 +45,7 @@ public final class R {
         /**  App stuff 
          */
         public static final int app_name=0x7f040000;
+        public static final int list_activity_name=0x7f040007;
         public static final int menu_settings=0x7f040001;
         public static final int title_activity_main=0x7f040002;
     }
