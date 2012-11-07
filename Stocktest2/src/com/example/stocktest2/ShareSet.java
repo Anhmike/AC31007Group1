@@ -139,12 +139,12 @@ public class ShareSet
 	
 	public void setWeeklyHigh(double dailyHigh)
 	{
-		if(weeklyHigh < dailyHigh) weeklyHigh = dailyHigh;
+		if (weeklyHigh < dailyHigh) weeklyHigh = dailyHigh;
 	}
 	
 	public void setWeeklyLow(double dailyLow)
 	{
-		if(weeklyLow > dailyLow) weeklyLow = dailyLow;
+		if (weeklyLow > dailyLow) weeklyLow = dailyLow;
 	}
 	
 	public double getRun()
@@ -201,7 +201,7 @@ public class ShareSet
     //Returns a Stock as a specially formatted string
     public String toString()
     {
-    	return (companyName + "," + sharesOwned + "," + total);
+    	return (companyName + "\t" + sharesOwned + "\t" + total);
     	
     }
 }

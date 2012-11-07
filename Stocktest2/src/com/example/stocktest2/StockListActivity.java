@@ -21,8 +21,8 @@ import android.widget.Toast;
  */
 public class StockListActivity extends ListActivity
 {
-
-    private ShareSet[] listItems;
+	private String stocks;
+    private String[] listItems;
     private ProgressDialog dialog;
     
 
@@ -36,49 +36,50 @@ public class StockListActivity extends ListActivity
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
             //Get the Extras from MainActivity
-        //letters = getIntent().getStringExtra("letters");
-
-        dialog = ProgressDialog.show(this, "Please Wait...",
-                        "Searching Words...", true);
+        stocks = getIntent().getStringExtra("Stocks");
         
+        
+        //dialog = ProgressDialog.show(this, "Please Wait...","Parsing Stocks...", true);
+        listItems = stocks.split(";");
+        setListAdapter(new ArrayAdapter<String>(StockListActivity.this, R.layout.list_item, listItems));
+        ListView lv = getListView();
+        lv.setTextFilterEnabled(true);
         //Calculates list items on separate GUI thread.  Shows progress dialog during...
-        new AsyncTask<String, Integer, String>()
-        {
-
-            @Override
-            protected void onProgressUpdate(Integer... progress)
-            {
-                super.onProgressUpdate(progress);
-            }
-
-
-            @Override
-            protected String doInBackground(String... arg0)
-            {
-                //TODO Main List Work
-            	return "Finished!";
-
-            }
-
-            @Override
-            protected void onPostExecute(String result)
-            {
-                dialog.dismiss();
-                
-                    //Set up a UI List
-                setListAdapter(new ArrayAdapter<ShareSet>(StockListActivity.this, R.layout.list_item, listItems));
-                ListView lv = getListView();
-                lv.setTextFilterEnabled(true);
-
-            }
-
-        }.execute("");
+//        new AsyncTask<String, Integer, String>()
+//        {
+//
+//            @Override
+//            protected void onProgressUpdate(Integer... progress)
+//            {
+//                super.onProgressUpdate(progress);
+//            }
+//
+//
+//            @Override
+//            protected String doInBackground(String... arg0)
+//            {
+//            	            	
+//            	return "Finished!";
+//
+//            }
+//
+//            @Override
+//            protected void onPostExecute(String result)
+//            {
+//                dialog.dismiss();
+//                
+//                    //Set up a UI List
+//                
+//
+//            }
+//
+//        }.execute("");
 
 
 
     }
 
-    @Override
+	@Override
     public void onBackPressed()
     {
         Intent intent = new Intent(this, MainActivity.class);

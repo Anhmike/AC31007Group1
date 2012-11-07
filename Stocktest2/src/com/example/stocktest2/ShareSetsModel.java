@@ -99,7 +99,7 @@ public class ShareSetsModel
 		for (int i=0; i<SHARES.length; i++)
 		{
 			YahooFinanceAPI.getInstance().fetchAndParseShare(SHARES[i]);
-			text = text + SHARES[i].toString() + ",";
+			text += SHARES[i].toString() + ";";
 		}
 		
 		return text;

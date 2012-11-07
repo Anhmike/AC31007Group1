@@ -78,7 +78,10 @@ public class MainActivity extends Activity
         	public void onClick(View v)
 			{
 				if (!checkInternetConnection())
-					Toast.makeText(MainActivity.this, "Internet Access Required...", Toast.LENGTH_SHORT).show();
+				{
+					Toast.makeText(MainActivity.this, "No feed available...", Toast.LENGTH_SHORT).show();
+					return;
+				}
 
 				//Set up "Loading" dialog
 				dialog = ProgressDialog.show(MainActivity.this, "Please Wait...",
@@ -153,10 +156,10 @@ public class MainActivity extends Activity
 		            protected void onPostExecute(String result)
 		            {
 		            	dialog.dismiss();
-		            	txtOutput.setText(result);
-		            	//Intent intent = new Intent(MainActivity.this, StockListActivity.class);
-		            	//intent.putExtra("Ticker", value)
-		            	//startActivity(intent);
+		            	//Send everything to a List screen
+		            	Intent intent = new Intent(MainActivity.this, StockListActivity.class);
+		            	intent.putExtra("Stocks", result);
+		            	startActivity(intent);
 		            }
 
 				}.execute("");
@@ -178,7 +181,10 @@ public class MainActivity extends Activity
 			public void onClick(View v)
 			{
 				if (!checkInternetConnection())
-					Toast.makeText(MainActivity.this, "Internet Access Required...", Toast.LENGTH_SHORT).show();
+				{
+					Toast.makeText(MainActivity.this, "No feed available...", Toast.LENGTH_SHORT).show();
+					return;
+				}
 
 				//Set up "Loading" dialog
 				dialog = ProgressDialog.show(MainActivity.this, "Please Wait...",
@@ -230,8 +236,11 @@ public class MainActivity extends Activity
 			public void onClick(View v)
 			{
 				if (!checkInternetConnection())
-					Toast.makeText(MainActivity.this, "Internet Access Required...", Toast.LENGTH_SHORT).show();
-	
+				{
+					Toast.makeText(MainActivity.this, "No feed available...", Toast.LENGTH_SHORT).show();
+					return;
+				}
+				
 				//Set up "Loading" dialog
 				dialog = ProgressDialog.show(MainActivity.this, "Please Wait...",
 	                    "Fetching Stock Market Data...", true);
