@@ -16,6 +16,8 @@ public class ShareSet
 	private double weeklyLow;//
 	private double total;//
 	private double previousFridayTotal;
+	private double previousFridayPrice;
+	private long previousFridayVolume;
 	private String priceChange;
 	private String LTtime;
 	
@@ -34,6 +36,8 @@ public class ShareSet
 		weeklyLow = 1000;
 		total = 0;
 		previousFridayTotal = 0;
+		previousFridayPrice = 0;
+		previousFridayVolume = 0;
 		priceChange = "";
 	}
 
@@ -48,6 +52,12 @@ public class ShareSet
 		calculateTotal();
 		setWeeklyHigh(dailyHigh);
 		setWeeklyLow(dailyLow);
+	}
+	
+	public void setShareHistory (double fridayPrice, long fridayVolume)
+	{
+		previousFridayPrice = fridayPrice;
+		previousFridayVolume = fridayVolume;
 		setPreviousWeekTotal();
 	}
 	
@@ -149,18 +159,7 @@ public class ShareSet
 	
 	public void setPreviousWeekTotal()
 	{
-		
-		//if(Calendar.HOUR_OF_DAY >= 16 && Calendar.MINUTE >=30)
-		
-		Calendar c = Calendar.getInstance();
-		Date today = new Date();
-		c.setTime(today);
-		int weekDay = c.get(Calendar.DAY_OF_WEEK);
-		
-		if( weekDay==2) // if it is Monday set the previous Total
-		{
-		   previousFridayTotal = sharesOwned * previousClosePrice;
-		}
+		   previousFridayTotal = sharesOwned * previousFridayPrice;
 	}
 
     public double getPlummetRocket()
@@ -202,7 +201,7 @@ public class ShareSet
     //Returns a Stock as a specially formatted string
     public String toString()
     {
-    	return (companyTicker + "\t" + total);
+    	return (companyName + "," + sharesOwned + "," + total);
     	
     }
 }

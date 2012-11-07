@@ -1,15 +1,12 @@
 package com.example.stocktest2;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.view.View;
 import android.widget.*;
@@ -21,13 +18,13 @@ public class MainActivity extends Activity
 {
 	//YahooFinanceAPI financeAPI;
 	private TextView txtOutput;
-	private Button btnFetch;
-	
-	private Button btnHistory1Fetch;
-	
-	private Button btnHistory2Fetch;
-	
 	private Button btnTotal;
+	
+	private Button btnShares;
+	
+	private Button btnLostGained;
+	
+	private Button btnBestWorst;
 	
 	private ProgressDialog dialog;
 	
@@ -43,13 +40,13 @@ public class MainActivity extends Activity
         
         //UI stuff.
         txtOutput = (TextView)findViewById(R.id.textOutput);
-        btnFetch = (Button)findViewById(R.id.getQuoteButton);
-        btnHistory1Fetch = (Button)findViewById(R.id.getHistoryText);
-        btnHistory2Fetch = (Button)findViewById(R.id.getHistoryYQL);
         btnTotal = (Button)findViewById(R.id.getTotal);
+        btnShares = (Button)findViewById(R.id.getShares );
+        btnLostGained = (Button)findViewById(R.id.getLostGained);
+        btnBestWorst = (Button)findViewById(R.id.getBestWorst);
         
-        //Overriding OnClick behaviour with my own method.
-        btnFetch.setOnClickListener(new View.OnClickListener()
+        /*
+        btnTotal.setOnClickListener(new View.OnClickListener()
         {
 			
 			public void onClick(View v)
@@ -74,49 +71,108 @@ public class MainActivity extends Activity
 			}
 			
 		});
-    
-        btnHistory1Fetch.setOnClickListener(new View.OnClickListener()
+        */
+        btnTotal.setOnClickListener(new View.OnClickListener()
         {
 			
-			public void onClick(View v)
+        	public void onClick(View v)
 			{
 				if (!checkInternetConnection())
 					Toast.makeText(MainActivity.this, "Internet Access Required...", Toast.LENGTH_SHORT).show();
+
+				//Set up "Loading" dialog
+				dialog = ProgressDialog.show(MainActivity.this, "Please Wait...",
+                        "Fetching Stock Market Data...", true);
+
+				//Fetch share data on another thread capable of updating the UI.
+				new AsyncTask<String, Integer, String>()
+				{
+
+		            @Override
+		            protected void onProgressUpdate(Integer... progress)
+		            {
+		                super.onProgressUpdate(progress);
+		            }
+
+
+		            @Override
+		            protected String doInBackground(String... arg0)
+		            {
+		                return portfolio.calculateFridayPortfolio();
+
+		            }
+
+		            @Override
+		            protected void onPostExecute(String result)
+		            {
+		            	dialog.dismiss();
+		            	txtOutput.setText(result);
+		            }
+
+				}.execute("");
 				
-				/*
-				 * Date = 0
-				 * Open = 1
-				 * High = 2
-				 * Low = 3
-				 * Close = 3
-				 * Volume = 4
-				 * Adj Close = 5
-				 * 
-				 */
-				
-				
-				txtOutput.setText(YahooFinanceAPI.getInstance().fetchAndParseHistory("TSCO"));
-				
+				//Disable the button
+				btnTotal.setEnabled(false);
+
+				//Enable the button again
+				btnTotal.setEnabled(true);
 			}
 			
 		});
         
-        btnHistory2Fetch.setOnClickListener(new View.OnClickListener()
+        btnShares.setOnClickListener(new View.OnClickListener()
         {
-			
-			public void onClick(View v)
+        	public void onClick(View v)
 			{
 				if (!checkInternetConnection())
 					Toast.makeText(MainActivity.this, "Internet Access Required...", Toast.LENGTH_SHORT).show();
+
+				//Set up "Loading" dialog
+				dialog = ProgressDialog.show(MainActivity.this, "Please Wait...",
+                        "Fetching Stock Market Data...", true);
+
+				//Fetch share data on another thread capable of updating the UI.
+				new AsyncTask<String, Integer, String>()
+				{
+
+		            @Override
+		            protected void onProgressUpdate(Integer... progress)
+		            {
+		                super.onProgressUpdate(progress);
+		            }
+
+
+		            @Override
+		            protected String doInBackground(String... arg0)
+		            {
+		                return portfolio.calculateShareTotals();
+
+		            }
+
+		            @Override
+		            protected void onPostExecute(String result)
+		            {
+		            	dialog.dismiss();
+		            	txtOutput.setText(result);
+		            	//Intent intent = new Intent(MainActivity.this, StockListActivity.class);
+		            	//intent.putExtra("Ticker", value)
+		            	//startActivity(intent);
+		            }
+
+				}.execute("");
 				
-				txtOutput.setText(YahooFinanceAPI.getInstance().fetchAndParseYQLHistory("TSCO"));
-				
-			}
+				//Disable the button
+				btnShares.setEnabled(false);
+
+				//Enable the button again
+				btnShares.setEnabled(true);
 			
+			}
 		});
+        
         
        //Overriding OnClick behaviour with my own method.
-        btnTotal.setOnClickListener(new View.OnClickListener()
+        btnLostGained.setOnClickListener(new View.OnClickListener()
         {
 			
 			public void onClick(View v)
@@ -142,7 +198,7 @@ public class MainActivity extends Activity
 		            @Override
 		            protected String doInBackground(String... arg0)
 		            {
-		                return portfolio.calculatePortfolio();
+		                return portfolio.calculateCurrentPortfolio();
 
 		            }
 
@@ -156,13 +212,63 @@ public class MainActivity extends Activity
 				}.execute("");
 				
 				//Disable the button
-				btnTotal.setEnabled(false);
+				btnLostGained.setEnabled(false);
 				
 				
 				
 				
 				//Enable the button again
-				btnTotal.setEnabled(true);
+				btnLostGained.setEnabled(true);
+			}
+			
+		});
+    
+        //Overriding OnClick behaviour with my own method.
+        btnBestWorst.setOnClickListener(new View.OnClickListener()
+	    {
+			
+			public void onClick(View v)
+			{
+				if (!checkInternetConnection())
+					Toast.makeText(MainActivity.this, "Internet Access Required...", Toast.LENGTH_SHORT).show();
+	
+				//Set up "Loading" dialog
+				dialog = ProgressDialog.show(MainActivity.this, "Please Wait...",
+	                    "Fetching Stock Market Data...", true);
+	
+				//Fetch share data on another thread capable of updating the UI.
+				new AsyncTask<String, Integer, String>()
+				{
+	
+		            @Override
+		            protected void onProgressUpdate(Integer... progress)
+		            {
+		                super.onProgressUpdate(progress);
+		            }
+	
+	
+		            @Override
+		            protected String doInBackground(String... arg0)
+		            {
+		                return portfolio.calculateCurrentPortfolio();
+	
+		            }
+	
+		            @Override
+		            protected void onPostExecute(String result)
+		            {
+		            	dialog.dismiss();
+		            	txtOutput.setText(result);
+		            }
+	
+				}.execute("");
+				
+				//Disable the button
+				btnBestWorst.setEnabled(false);
+				
+
+				//Enable the button again
+				btnBestWorst.setEnabled(true);
 			}
 			
 		});
@@ -171,7 +277,7 @@ public class MainActivity extends Activity
         
     public boolean checkInternetConnection()
     {
-        //Check for internet access
+        //Check for Internet access
         ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         if (cm.getActiveNetworkInfo().isConnectedOrConnecting() == false)
         {
@@ -179,8 +285,6 @@ public class MainActivity extends Activity
         }	
         return true;
     }
-    
-    
-    
+
 }
 

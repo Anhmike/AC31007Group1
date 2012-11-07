@@ -190,13 +190,15 @@ public class YahooFinanceAPI
 	public String getLastFriday()
 	{
         Calendar cal = Calendar.getInstance();
+        cal.setFirstDayOfWeek(cal.SATURDAY);
         cal.add(Calendar.WEEK_OF_YEAR, -1);
         cal.set(Calendar.DAY_OF_WEEK, cal.FRIDAY);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
 
         return  sdf.format(cal.getTime());    
     }
+	
 	
 	/****************************
 	 * Method to get the historical data using ichart URL - returns the content of the ichart query ,
@@ -211,15 +213,15 @@ public class YahooFinanceAPI
 	 * @param companyTicker
 	 * @return
 	 */
-	public String fetchAndParseHistory(String companyTicker)
+	public boolean fetchAndParseHistoryObject(ShareSet object)
 	{
 		try 
 		{
-			String[] dateTokens = (getLastFriday().split("-"));
+			String[] dateTokens = (getLastFriday().split("/"));
 			int month = ( Integer.parseInt(dateTokens[1]) - 1);
 			
-			String url_text ="http://ichart.finance.yahoo.com/table.csv?s=" + companyTicker + 
-					".L&a="+ month +"&b="+dateTokens[0]+"&c="+dateTokens[2]+"&d="+ month +"&e="+dateTokens[0]+"&f="+dateTokens[2]+"&g=d&ignore=.csv"; 
+			String url_text ="http://ichart.finance.yahoo.com/table.csv?s=" + object.getTicker() + 
+					".L&a="+ month +"&b="+ dateTokens[0]+"&c=20"+dateTokens[2]+"&d="+ month +"&e="+dateTokens[0]+"&f=20"+dateTokens[2]+"&g=d&ignore=.csv"; 
 			
 			 HttpClient client = new DefaultHttpClient();
 			 HttpGet request = new HttpGet(url_text);
@@ -227,9 +229,27 @@ public class YahooFinanceAPI
              ResponseHandler<String> responseHandler = new BasicResponseHandler();
              String response_str = client.execute(request, responseHandler);
              
+                /*
+				 * Date = 0
+				 * Open = 1
+				 * High = 2
+				 * Low = 3
+				 * Close = 4
+				 * Volume = 5
+				 * Adj Close = 6
+				 */
+
+             String [] lines = response_str.split("\n");
              
+             String[] data = (lines[1].split(","));
+			
+			//Tidy up corresponding fields
+			Double price = Double.parseDouble(data[4]) / 100;	//Divide by 100 to get in pounds 
+			Long volume = Long.parseLong(data[5]);
+			
+			object.setShareHistory(price, volume);
              
-             return parseTextHistory(response_str);
+			return true;
 		} 
 		catch (MalformedURLException e) 
 		{
@@ -239,134 +259,7 @@ public class YahooFinanceAPI
 		{
 			e.printStackTrace();
 		}
-		
-		//Exception will have been called at this point
-		//Return null, so client can take appropriate action
-		return null;
-	}
-	
-	
-	/*public String fetchAndParseHistoryObject(ShareSet object)
-	{
-		try 
-		{
-			String[] dateTokens = (getLastFriday().split("-"));
-			int month = ( Integer.parseInt(dateTokens[1]) - 1);
-			
-			String url_text ="http://ichart.finance.yahoo.com/table.csv?s=" + "" + 
-					".L&a="+ month +"&b="+dateTokens[0]+"&c="+dateTokens[2]+"&d="+ month +"&e="+dateTokens[0]+"&f="+dateTokens[2]+"&g=d&ignore=.csv"; 
-			
-			 HttpClient client = new DefaultHttpClient();
-			 HttpGet request = new HttpGet(url_text);
-             // Get the response
-             ResponseHandler<String> responseHandler = new BasicResponseHandler();
-             String response_str = client.execute(request, responseHandler);
-             
-             
-             
-             return parseTextHistory(response_str);
-		} 
-		catch (MalformedURLException e) 
-		{
-			e.printStackTrace();
-		}
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
-	}
-	*/
-	/********************
-	 * Method to get the historical data using YQL - returning a string representing the content of the 
-	 * XML or JSON file returned from the query.
-	 * 
-	 * URL got from here:
-	 * http://developer.yahoo.com/yql/console/?q=SELECT+%2A+FROM+yahoo.finance.quotes+WHERE+symbol%3D%22RBS.L%22%0A%09%09&env=http%3A%2F%2Fdatatables.org%2Falltables.env#h=SELECT%20*%20FROM%20yahoo.finance.historicaldata%20WHERE%20startDate%3D%222012-10-26%22%20AND%20symbol%3D%22TSCO.L%22%20AND%20endDate%3D%222012-10-26%22%0A%09%09
-	 * 
-	 * 
-	 * @param companyTicker
-	 * @return
-	 */
-	public String fetchAndParseYQLHistory(String companyTicker)
-	{
-		try 
-		{
-			 /***********************************
-			  * XML file return using YQL query in URL
-			  */
-			 String date = getLastFriday();
-			
-			 String url_text = "http://query.yahooapis.com/v1/public/yql?q=SELECT%20*%20FROM%20yahoo.finance.historicaldata%20WHERE%20startDate%3D%22"+
-			 date +"%22%20AND%20symbol%3D%22"+ companyTicker +".L%22%20AND%20endDate%3D%22"+
-			 date +"%22%0A%09%09&diagnostics=true&env=http%3A%2F%2Fdatatables.org%2Falltables.env";
-			 
-			 HttpClient client = new DefaultHttpClient();
-			 HttpGet request = new HttpGet(url_text);
-             // Get the response
-             ResponseHandler<String> responseHandler = new BasicResponseHandler();
-             String content = client.execute(request,responseHandler);
-
-			 
-             /* **********************************************************************
-			  * XML file return - Try to parse with NameValuePairs
-			  * 
-	  		 String high = "";
-             String low = "";
-             String close = "";
-             String volume = "";
-             
-				// Add post data
-				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-				nameValuePairs.add(new BasicNameValuePair("High", high));
-				nameValuePairs.add(new BasicNameValuePair("Low", low));
-				nameValuePairs.add(new BasicNameValuePair("Close", close));
-				nameValuePairs.add(new BasicNameValuePair("Volume", volume));
-				
-				request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-				
-				// Execute HTTP Post Request
-				content = client.execute(request, responseHandler);	
-			 
-				******************************************************************/
-			 
-             
-             
-             
-			 /**************************************************************************
-			  * JSON file returned from YQL query in URL
-			  * 
-             String url = "http://query.yahooapis.com/v1/public/yql?q=SELECT%20*%20FROM%20yahoo.finance.historicaldata%20WHERE%20startDate%3D%22"+date
-            		 +"%22%20AND%20symbol%3D%22"+companyTicker+".L%22%20AND%20endDate%3D%22"+date
-            		 +"%22%0A%09%09&format=json&diagnostics=true&env=http%3A%2F%2Fdatatables.org%2Falltables.env";
-
-			 HttpClient client = new DefaultHttpClient();
-			 HttpGet request = new HttpGet(url);
-             // Get the response
-             ResponseHandler<String> responseHandler = new BasicResponseHandler();
-             String content = client.execute(request,responseHandler);
-             
-             ************************************************************************************/
-			 
-             
-             return (content);
-
-		}
-		catch (IOException e) 
-		{
-            e.printStackTrace();
-        }
-		
-		//Exception will have been called at this point
-		//Return null, so client can take appropriate action
-		return null;
-	}
-
-	public String parseTextHistory(String text)
-	{
-		String [] lines = text.split("\n");
-		String [] data = lines[1].split(",");
-
-		return lines[1];
+		return false;
 	}
 }
 

@@ -14,34 +14,34 @@
             android:id="@+id/tableRow1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
+
             <Button
-                android:id="@+id/getHistoryText"
-                android:padding="10dp"
-                android:width="120dp" 
-                android:height="120dp"
+                android:id="@+id/getTotal"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:background="@drawable/round_button"
                 android:gravity="center_vertical|center_horizontal"
-                android:text="@string/TestHistoryText"
+                android:height="120dp"
+                android:padding="10dp"
+                android:text="@string/Total_Button"
                 android:textColor="#f3bf7f"
                 android:textSize="20dp"
-                android:textStyle="bold" />
-
+                android:textStyle="bold"
+                android:width="120dp" />
+
             <Button
-                android:id="@+id/getHistoryYQL"
-                android:padding="10dp"
-                android:width="120dp" 
-                android:height="120dp"
-                android:layout_margin="10dp"
+                android:id="@+id/getShares"
                 android:layout_gravity="center"
+                android:layout_margin="10dp"
                 android:background="@drawable/round_button"
                 android:gravity="center_vertical|center_horizontal"
-                android:text="@string/TestHistoryYQL"
+                android:height="120dp"
+                android:padding="10dp"
+                android:text="@string/ShareSet_Worth"
                 android:textColor="#f3bf7f"
                 android:textSize="20dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:width="120dp" />
 
         </TableRow>
         
@@ -49,69 +49,34 @@
             android:id="@+id/tableRow2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
-            <Button
-                android:id="@+id/getQuoteButton"
-                android:padding="10dp"
-                android:width="120dp" 
-                android:height="120dp"
-                android:layout_margin="10dp"
-                android:layout_gravity="center"
-                android:background="@drawable/round_button"
-                android:gravity="center_vertical|center_horizontal"
-                android:text="@string/Test_Button_Text"
-                android:textColor="#f3bf7f" 
-                android:textSize="20dp" 
-                android:textStyle="bold" />
 
             <Button
-                android:id="@+id/getTotal"
-                android:padding="10dp"
-                android:width="120dp" 
-                android:height="120dp"
-                android:layout_margin="10dp"
+                android:id="@+id/getLostGained"
                 android:layout_gravity="center"
+                android:layout_margin="10dp"
                 android:background="@drawable/round_button"
                 android:gravity="center_vertical|center_horizontal"
-                android:text="@string/Total_Value_Button_Text"
-                android:textColor="#f3bf7f" 
-                android:textSize="20dp" 
-                android:textStyle="bold" />
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <Button
-                android:id="@+id/getHistory"
-                android:padding="10dp"
-                android:width="120dp" 
                 android:height="120dp"
-                android:layout_margin="10dp"
-                android:layout_gravity="center"
-                android:background="@drawable/round_button"
-                android:gravity="center_vertical|center_horizontal"
-                android:text="@string/TestHistoryText"
-                android:textColor="#f3bf7f" 
-                android:textSize="20dp" 
-                android:textStyle="bold" />
-
-
-            <Button
-                android:id="@+id/getYQL"
                 android:padding="10dp"
-                android:width="120dp" 
-                android:height="120dp"
-                android:layout_margin="10dp"
-                android:layout_gravity="center"
-                android:background="@drawable/round_button"
-                android:gravity="center_vertical|center_horizontal"
-                android:text="@string/TestHistoryYQL"
+                android:text="@string/Lost_Gained"
                 android:textColor="#f3bf7f"
-                android:textSize="20dp" 
-                android:textStyle="bold" />
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:width="120dp" />
+
+            <Button
+                android:id="@+id/getBestWorst"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/round_button"
+                android:gravity="center_vertical|center_horizontal"
+                android:height="120dp"
+                android:padding="10dp"
+                android:text="@string/Best_Worst"
+                android:textColor="#f3bf7f"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:width="120dp" />
 
         </TableRow>
         
