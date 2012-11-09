@@ -1,5 +1,7 @@
 package com.example.stocktest2;
 
+import java.util.ArrayList;
+
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -78,10 +80,7 @@ public class MainActivity extends Activity
         	public void onClick(View v)
 			{
 				if (!checkInternetConnection())
-				{
-					Toast.makeText(MainActivity.this, "No feed available...", Toast.LENGTH_SHORT).show();
-					return;
-				}
+					Toast.makeText(MainActivity.this, "Internet Access Required...", Toast.LENGTH_SHORT).show();
 
 				//Set up "Loading" dialog
 				dialog = ProgressDialog.show(MainActivity.this, "Please Wait...",
@@ -109,7 +108,10 @@ public class MainActivity extends Activity
 		            protected void onPostExecute(String result)
 		            {
 		            	dialog.dismiss();
-		            	txtOutput.setText(result);
+		            	//txtOutput.setText(result);
+		            	Intent intent = new Intent(MainActivity.this, TextViewActivity.class);
+		            	intent.putExtra("TextOutput", result);
+		            	startActivity(intent);
 		            }
 
 				}.execute("");
@@ -135,9 +137,8 @@ public class MainActivity extends Activity
                         "Fetching Stock Market Data...", true);
 
 				//Fetch share data on another thread capable of updating the UI.
-				new AsyncTask<String, Integer, String>()
+				new AsyncTask<String, Integer, ArrayList<String>>()
 				{
-
 		            @Override
 		            protected void onProgressUpdate(Integer... progress)
 		            {
@@ -146,19 +147,19 @@ public class MainActivity extends Activity
 
 
 		            @Override
-		            protected String doInBackground(String... arg0)
+		            protected ArrayList<String> doInBackground(String... arg0)
 		            {
 		                return portfolio.calculateShareTotals();
 
 		            }
 
 		            @Override
-		            protected void onPostExecute(String result)
+		            protected void onPostExecute(ArrayList<String> result)
 		            {
 		            	dialog.dismiss();
-		            	//Send everything to a List screen
+		            	//txtOutput.setText(result);
 		            	Intent intent = new Intent(MainActivity.this, StockListActivity.class);
-		            	intent.putExtra("Stocks", result);
+		            	intent.putStringArrayListExtra("Values", result);
 		            	startActivity(intent);
 		            }
 
@@ -181,10 +182,7 @@ public class MainActivity extends Activity
 			public void onClick(View v)
 			{
 				if (!checkInternetConnection())
-				{
-					Toast.makeText(MainActivity.this, "No feed available...", Toast.LENGTH_SHORT).show();
-					return;
-				}
+					Toast.makeText(MainActivity.this, "Internet Access Required...", Toast.LENGTH_SHORT).show();
 
 				//Set up "Loading" dialog
 				dialog = ProgressDialog.show(MainActivity.this, "Please Wait...",
@@ -204,7 +202,7 @@ public class MainActivity extends Activity
 		            @Override
 		            protected String doInBackground(String... arg0)
 		            {
-		                return portfolio.calculateCurrentPortfolio();
+		                return portfolio.calculateLossGain();
 
 		            }
 
@@ -212,7 +210,10 @@ public class MainActivity extends Activity
 		            protected void onPostExecute(String result)
 		            {
 		            	dialog.dismiss();
-		            	txtOutput.setText(result);
+		            	//txtOutput.setText(result);
+		            	Intent intent = new Intent(MainActivity.this, TextViewActivity.class);
+		            	intent.putExtra("TextOutput", result);
+		            	startActivity(intent);
 		            }
 
 				}.execute("");
@@ -236,11 +237,8 @@ public class MainActivity extends Activity
 			public void onClick(View v)
 			{
 				if (!checkInternetConnection())
-				{
-					Toast.makeText(MainActivity.this, "No feed available...", Toast.LENGTH_SHORT).show();
-					return;
-				}
-				
+					Toast.makeText(MainActivity.this, "Internet Access Required...", Toast.LENGTH_SHORT).show();
+	
 				//Set up "Loading" dialog
 				dialog = ProgressDialog.show(MainActivity.this, "Please Wait...",
 	                    "Fetching Stock Market Data...", true);

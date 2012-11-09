@@ -190,7 +190,7 @@ public class YahooFinanceAPI
 	public String getLastFriday()
 	{
         Calendar cal = Calendar.getInstance();
-        cal.setFirstDayOfWeek(cal.SATURDAY);
+        cal.setFirstDayOfWeek(cal.MONDAY);
         cal.add(Calendar.WEEK_OF_YEAR, -1);
         cal.set(Calendar.DAY_OF_WEEK, cal.FRIDAY);
 

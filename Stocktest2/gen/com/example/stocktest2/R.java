@@ -14,20 +14,29 @@ public final class R {
         public static final int ic_action_search=0x7f020000;
         public static final int ic_launcher=0x7f020001;
         public static final int round_button=0x7f020002;
+        public static final int rounded_text_view=0x7f020003;
+        public static final int rounded_top=0x7f020004;
     }
     public static final class id {
+        public static final int Company=0x7f070008;
+        public static final int Total=0x7f07000a;
+        public static final int Units=0x7f070009;
+        public static final int frame=0x7f07000b;
         public static final int getBestWorst=0x7f070005;
         public static final int getLostGained=0x7f070004;
         public static final int getShares=0x7f070002;
         public static final int getTotal=0x7f070001;
-        public static final int menu_settings=0x7f070007;
+        public static final int menu_settings=0x7f07000d;
+        public static final int output=0x7f07000c;
+        public static final int table=0x7f070007;
         public static final int tableRow1=0x7f070000;
         public static final int tableRow2=0x7f070003;
         public static final int textOutput=0x7f070006;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
-        public static final int list_item=0x7f030001;
+        public static final int stock_list=0x7f030001;
+        public static final int text_view=0x7f030002;
     }
     public static final class menu {
         public static final int activity_main=0x7f060000;
@@ -45,6 +54,7 @@ public final class R {
         public static final int list_activity_name=0x7f040007;
         public static final int menu_settings=0x7f040001;
         public static final int title_activity_main=0x7f040002;
+        public static final int total_portfolio_name=0x7f040008;
     }
     public static final class style {
         public static final int AppTheme=0x7f050000;

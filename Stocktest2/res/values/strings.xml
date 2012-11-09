@@ -11,6 +11,7 @@
 	<string name="Lost_Gained">Lost / Gained</string>
 	<string name="Best_Worst">Best / Worst</string>
 	<string name="list_activity_name">Portfolio Summary</string>
+	<string name="total_portfolio_name">Total Portoflio</string>
 
 
 </resources>

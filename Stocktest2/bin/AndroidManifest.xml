@@ -25,6 +25,10 @@
             android:name=".StockListActivity"
             android:label="@string/list_activity_name" >
         </activity>
+        <activity
+            android:name=".TextViewActivity"
+            android:label="@string/total_portfolio_name" >
+        </activity>
     </application>
 	
 </manifest>

@@ -1,5 +1,8 @@
 package com.example.stocktest2;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+
 public class ShareSetsModel 
 {
 	//Map<String, ShareSet> SHARES = new HashMap<String, ShareSet>();
@@ -9,8 +12,8 @@ public class ShareSetsModel
 	{
 		//Try with Array
 		SHARES[0] = new ShareSet("BP plc", 192, "BP");
-		SHARES[1] = new ShareSet("HSBC Holdings plc", 343, "HSBA");
-		SHARES[2] = new ShareSet("Experian Ordinary", 258,"EXPN");
+		SHARES[1] = new ShareSet("Experian Ordinary", 258,"EXPN");
+		SHARES[2] = new ShareSet("HSBC Holdings plc", 343, "HSBA");
 		SHARES[3] = new ShareSet("Marks & Spencer", 485, "MKS");
 		SHARES[4] = new ShareSet("Smith & Nephew", 1219, "SN");
 	}
@@ -48,8 +51,6 @@ public class ShareSetsModel
 	
 	public String calculateFridayPortfolio()
 	{
-		String text = "";
-		
 		double totalPortfolio = 0;
 		
 		for (int i=0; i<SHARES.length; i++)
@@ -58,9 +59,7 @@ public class ShareSetsModel
 			totalPortfolio += SHARES[i].getPreviousTotal();
 		}
 		
-		text = text + "\nThe total worth of your portfolio was \u00A3" + Math.round(totalPortfolio) + " at the close of the stock market on " + YahooFinanceAPI.getInstance().getLastFriday() + ".";
-		
-		return text;
+		return ("\nThe total worth of your portfolio is<b> \u00A3" + (int)(Math.round(totalPortfolio))+ " </b> as of <b>" + YahooFinanceAPI.getInstance().getLastFriday() + "</b>.");
 	}
 	
 	public String calculateLossGain()
@@ -69,40 +68,42 @@ public class ShareSetsModel
 		
 		double totalPortfolio = 0;
 		double prevTotal = 0;
-		String appTime = "";
 		
 		for (int i=0; i<SHARES.length; i++)
 		{
 			YahooFinanceAPI.getInstance().fetchAndParseShare(SHARES[i]);
-			text = text + SHARES[i].getName() + " - \u00A3" + SHARES[i].getTotal() + " - " + SHARES[i].getTime() + "h.\n";
+			YahooFinanceAPI.getInstance().fetchAndParseHistoryObject(SHARES[i]);
 			totalPortfolio += SHARES[i].getTotal();
 			prevTotal += SHARES[i].getPreviousTotal();
 		}
 		
-		appTime = SHARES[0].getTime();
+		//String appTime = SHARES[0].getTime();
+		//"Current: \u00A3"+(int)Math.round(totalPortfolio) + " at " + appTime + " \n Previous: \u00A3" + (int)Math.round(prevTotal) + 
 		
 		//Detect Loss or Gain
 		double diff = prevTotal - totalPortfolio;
 		if(diff > 0)
 		{
-			text += "\n Current Total: \u00A3" + totalPortfolio + "\n Previous Total: \u00A3"+ prevTotal + "\n You have lost \u00A3" +diff;
+			text += " As of <b>" + YahooFinanceAPI.getInstance().getLastFriday() + "</b> <br> you have <b>LOST <font COLOR=\"#FF0000\">\u00A3" + (int)Math.round(diff) + "</font></b>.";
 		}
-		else text += "\n Current Total: \u00A3" + totalPortfolio + "\n Previous Total: \u00A3"+ prevTotal + "\n You have gained \u00A3" + (diff*-1);
+		else text += " As of <b>" + YahooFinanceAPI.getInstance().getLastFriday() + "</b> <br> you have <b>GAINED <font COLOR=\"#00FF00\">\u00A3" + (int)Math.round(diff*-1) + "</font></b>.";
 		
 		return text;
 	}
 
-	public String calculateShareTotals()
+	public ArrayList<String> calculateShareTotals()
 	{
-		String text = "";
-		
+		ArrayList <String> values = new ArrayList<String>();
 		for (int i=0; i<SHARES.length; i++)
 		{
 			YahooFinanceAPI.getInstance().fetchAndParseShare(SHARES[i]);
-			text += SHARES[i].toString() + ";";
+			values.add(SHARES[i].getName());
+			values.add(String.valueOf(SHARES[i].getShares()));
+			values.add(String.valueOf(roundDouble(SHARES[i].getTotal())));
+			//list.add(SHARES[i].toString());
 		}
 		
-		return text;
+		return values;
 	}
 	
 	public String detectPlummetRocket()
@@ -126,5 +127,11 @@ public class ShareSetsModel
 		}
 		
 		return text;
+	}
+	
+	public double roundDouble(double d) 
+	{
+	    DecimalFormat twoDForm = new DecimalFormat("#.##");
+	    return Double.valueOf(twoDForm.format(d));
 	}
 }
