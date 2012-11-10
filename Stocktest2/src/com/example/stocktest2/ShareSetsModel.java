@@ -1,5 +1,7 @@
 package com.example.stocktest2;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -29,7 +31,8 @@ public class ShareSetsModel
 	 * Adj Close = 6
 	 * 
 	 */
-	public String calculateCurrentPortfolio()
+	public String calculateCurrentPortfolio() throws IOException, MalformedURLException
+
 	{
 		String text = "";
 		
@@ -49,7 +52,8 @@ public class ShareSetsModel
 		return text;
 	}
 	
-	public String calculateFridayPortfolio()
+	public String calculateFridayPortfolio() throws IOException, MalformedURLException
+
 	{
 		double totalPortfolio = 0;
 		
@@ -62,7 +66,8 @@ public class ShareSetsModel
 		return ("\nThe total worth of your portfolio is<b> \u00A3" + (int)(Math.round(totalPortfolio))+ " </b> as of <b>" + YahooFinanceAPI.getInstance().getLastFriday() + "</b>.");
 	}
 	
-	public String calculateLossGain()
+	public String calculateLossGain() throws IOException, MalformedURLException
+
 	{
 		String text = "";
 		
@@ -91,7 +96,8 @@ public class ShareSetsModel
 		return text;
 	}
 
-	public ArrayList<String> calculateShareTotals()
+	public ArrayList<String> calculateShareTotals() throws IOException, MalformedURLException
+
 	{
 		ArrayList <String> values = new ArrayList<String>();
 		for (int i=0; i<SHARES.length; i++)

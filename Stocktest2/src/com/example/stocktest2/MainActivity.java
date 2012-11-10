@@ -1,5 +1,7 @@
 package com.example.stocktest2;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 import android.net.ConnectivityManager;
@@ -79,8 +81,11 @@ public class MainActivity extends Activity
 			
         	public void onClick(View v)
 			{
-				if (!checkInternetConnection())
-					Toast.makeText(MainActivity.this, "Internet Access Required...", Toast.LENGTH_SHORT).show();
+        		if (!checkInternetConnection())
+				{
+					Toast.makeText(MainActivity.this, "No Feed Available...", Toast.LENGTH_SHORT).show();
+					return;
+				}
 
 				//Set up "Loading" dialog
 				dialog = ProgressDialog.show(MainActivity.this, "Please Wait...",
@@ -100,7 +105,15 @@ public class MainActivity extends Activity
 		            @Override
 		            protected String doInBackground(String... arg0)
 		            {
-		                return portfolio.calculateFridayPortfolio();
+		            	
+		                try 
+		                {
+							return portfolio.calculateFridayPortfolio();
+						} 
+		                catch (MalformedURLException e) {}
+		                catch (IOException e) {}
+		                
+		                return null;
 
 		            }
 
@@ -108,6 +121,13 @@ public class MainActivity extends Activity
 		            protected void onPostExecute(String result)
 		            {
 		            	dialog.dismiss();
+				        
+		            	if (result == null)
+		            	{
+		            		Toast.makeText(MainActivity.this, "No Feed Available...", Toast.LENGTH_SHORT).show();
+		            		return;
+		            	}
+		            	
 		            	//txtOutput.setText(result);
 		            	Intent intent = new Intent(MainActivity.this, TextViewActivity.class);
 		            	intent.putExtra("TextOutput", result);
@@ -152,7 +172,14 @@ public class MainActivity extends Activity
 		            @Override
 		            protected ArrayList<String> doInBackground(String... arg0)
 		            {
-		                return portfolio.calculateShareTotals();
+		                try 
+		                {
+							return portfolio.calculateShareTotals();
+						} 
+		                catch (MalformedURLException e) {}
+		                catch (IOException e) {}
+		                
+		                return null;
 
 		            }
 
@@ -160,6 +187,12 @@ public class MainActivity extends Activity
 		            protected void onPostExecute(ArrayList<String> result)
 		            {
 		            	dialog.dismiss();
+		        
+		            	if (result == null)
+		            	{
+		            		Toast.makeText(MainActivity.this, "No Feed Available...", Toast.LENGTH_SHORT).show();
+		            		return;
+		            	}
 		            	//txtOutput.setText(result);
 		            	Intent intent = new Intent(MainActivity.this, StockListActivity.class);
 		            	intent.putStringArrayListExtra("Values", result);
@@ -208,14 +241,27 @@ public class MainActivity extends Activity
 		            @Override
 		            protected String doInBackground(String... arg0)
 		            {
-		                return portfolio.calculateLossGain();
-
+		                try 
+		                {
+							return portfolio.calculateLossGain();
+						} 
+		                catch (MalformedURLException e) {} 
+		                catch (IOException e) {}
+		                
+		                return null;
 		            }
 
 		            @Override
 		            protected void onPostExecute(String result)
 		            {
 		            	dialog.dismiss();
+		            	
+		            	if (result == null)
+		            	{
+		            		Toast.makeText(MainActivity.this, "No Feed Available...", Toast.LENGTH_SHORT).show();
+		            		return;
+		            	}
+		            	
 		            	//txtOutput.setText(result);
 		            	Intent intent = new Intent(MainActivity.this, TextViewActivity.class);
 		            	intent.putExtra("TextOutput", result);
@@ -266,14 +312,27 @@ public class MainActivity extends Activity
 		            @Override
 		            protected String doInBackground(String... arg0)
 		            {
-		                return portfolio.calculateCurrentPortfolio();
+		                try 
+		                {
+							return portfolio.calculateCurrentPortfolio();
+						} 
+		                catch (MalformedURLException e) {}
+		                catch (IOException e) {}
 	
+		                return null;
 		            }
 	
 		            @Override
 		            protected void onPostExecute(String result)
 		            {
 		            	dialog.dismiss();
+				        
+		            	if (result == null)
+		            	{
+		            		Toast.makeText(MainActivity.this, "No Feed Available...", Toast.LENGTH_SHORT).show();
+		            		return;
+		            	}
+		            	
 		            	txtOutput.setText(result);
 		            }
 	
