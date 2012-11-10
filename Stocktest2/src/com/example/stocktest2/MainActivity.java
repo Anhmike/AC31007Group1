@@ -130,7 +130,10 @@ public class MainActivity extends Activity
         	public void onClick(View v)
 			{
 				if (!checkInternetConnection())
-					Toast.makeText(MainActivity.this, "Internet Access Required...", Toast.LENGTH_SHORT).show();
+				{
+					Toast.makeText(MainActivity.this, "No Feed Available...", Toast.LENGTH_SHORT).show();
+					return;
+				}
 
 				//Set up "Loading" dialog
 				dialog = ProgressDialog.show(MainActivity.this, "Please Wait...",
@@ -182,7 +185,10 @@ public class MainActivity extends Activity
 			public void onClick(View v)
 			{
 				if (!checkInternetConnection())
-					Toast.makeText(MainActivity.this, "Internet Access Required...", Toast.LENGTH_SHORT).show();
+				{
+					Toast.makeText(MainActivity.this, "No Feed Available...", Toast.LENGTH_SHORT).show();
+					return;
+				}
 
 				//Set up "Loading" dialog
 				dialog = ProgressDialog.show(MainActivity.this, "Please Wait...",
@@ -237,7 +243,10 @@ public class MainActivity extends Activity
 			public void onClick(View v)
 			{
 				if (!checkInternetConnection())
-					Toast.makeText(MainActivity.this, "Internet Access Required...", Toast.LENGTH_SHORT).show();
+				{
+					Toast.makeText(MainActivity.this, "No Feed Available...", Toast.LENGTH_SHORT).show();
+					return;
+				}
 	
 				//Set up "Loading" dialog
 				dialog = ProgressDialog.show(MainActivity.this, "Please Wait...",
