@@ -2,39 +2,15 @@ package com.example.stocktest2;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.net.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.apache.http.HttpConnection;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.*;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.*;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.*;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-import org.w3c.dom.NodeList;
-import org.xml.sax.ContentHandler;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
 
-import android.sax.Element;
-import android.util.Log;
-import android.util.Xml;
 
 
 //Singleton boundary class representing the remote Yahoo! Finance API
@@ -59,62 +35,7 @@ public class YahooFinanceAPI
 		else
 			return instance;
 	}
-	
-	public String[] fetchAndParse(String companyTicker)
-	{
-		URL url;	//URL object to access Yahoo! Finance
-		try 
-		{
-			//s = Stock Symbol (+ ".L" = LON), l1 = Last Trade Price.
-			url = new URL("http://finance.yahoo.com/d/quotes.csv?s=" + companyTicker + ".L&f=st1l1"); //object.getTicker()
-			
-			//connect to Yahoo! finance.
-			URLConnection urlConnection = url.openConnection();
-			
-			//Buffer the CVS file return from Yahoo!
-			BufferedInputStream csvBuffer = new BufferedInputStream(urlConnection.getInputStream());			
-			ByteArrayBuffer byteArray = new ByteArrayBuffer(50);
-
-			//Append to byteArray until there is no more data (-1)
-			int current = 0;
-			while( (current = csvBuffer.read()) != -1)
-			{
-				byteArray.append((byte) current);
-			}
-
-			//Stores CVS into an unparsed string
-			String stockCSV = new String(byteArray.toByteArray());
-			
-			//Split unparsed string into tokens at commas
-			String[] rawTokens = (stockCSV.split(","));
-			
-			//Tidy up corresponding fields
-			String stockSymbol = rawTokens[0].substring(1, rawTokens[0].length() - 1);	//Stock symbol (1st element) with removed "" quotation marks
-			String stockTime = rawTokens[1].substring(1, rawTokens[1].length() - 3);	//Stock Time (2nd element) with removed "" quotation marks and 'Periods' (am/pm)
-			String stockPrice = String.valueOf(Double.parseDouble(rawTokens[2]) / 100);	//Divide by 100 to get in pounds £
-			
-			//Compensate stock time for US time-zone
-			String[] sub = stockTime.split(":");
-			int first = Integer.parseInt(sub[0]) + 5;
-			String compensatedStockTime = Integer.toString(first) + ":" + sub[1];
-			
-			//Return tidied up token array (separated CVS fields)
-			return (new String[] {stockSymbol, compensatedStockTime, stockPrice});
-		} 
-		catch (MalformedURLException e) 
-		{
-			e.printStackTrace();
-		}
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
 		
-		//Exception will have been called at this point
-		//Return null, so client can take appropriate action
-		return null;
-	}
-	
 	public boolean fetchAndParseShare(ShareSet object) throws IOException, MalformedURLException
 	{
 		URL url;	//URL object to access Yahoo! Finance

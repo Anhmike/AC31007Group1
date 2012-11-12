@@ -3,42 +3,40 @@ package com.example.stocktest2;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
- * Lists all stocks in portfolio and current trade price
+ * stockListActivity - sets up the xml for the layout of the display screens for the user and populates them with relevant information.
+ * 
+ * 
+ * Methods Used - 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  */
 public class StockListActivity extends Activity
 {
-
+	
     private ArrayList<String> list;
     private ProgressDialog dialog;
     
 
-    /** Called when the activity is first created.
-     * @param savedInstanceState
-     */
+  //********************************************Start of onCreate***********************************************************//
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -127,6 +125,7 @@ public class StockListActivity extends Activity
 
 
     }
+  //********************************************End of onCreate***********************************************************//
 
     @Override
     public void onBackPressed()
