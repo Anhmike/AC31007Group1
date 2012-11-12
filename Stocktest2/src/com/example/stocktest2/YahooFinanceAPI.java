@@ -12,21 +12,32 @@ import org.apache.http.impl.client.*;
 import org.apache.http.util.*;
 
 
-
-//Singleton boundary class representing the remote Yahoo! Finance API
-//Requests for stock data are routed through this class, parsed and returned in order
-//to create ShareSet objects for each Share in a portfolio
+/** Class YahooFinanceAPI
+* Brief: Singleton boundary class representing the remote Yahoo! Finance API
+* Requests for stock data are routed through this class, parsed and returned in order
+* to create ShareSet objects for each Share in a portfolio
+* 
+* Methods Involved:
+* 1.0 getInstance - Returns the single static instance of this object.  Ensures only one instance is ever created.  
+* 1.1 fetchAndShare(ShareSet) - Queries the Yahoo Finance API for current stock data on the passed Stock object,
+* 								parses it and populates the stock object.
+* 1.2 fetchAndShareHistory(ShareSet) - Gets the historical data of the stock (i.e. last friday's price) and populates the passed stock.
+* 1.3 getLastFriday() - Returns last friday's market close date.
+* 1.4 timeParsing - Returns the time in the desired format.
+*/
 public class YahooFinanceAPI 
 {
 
+	//Static instance of this object (Singleton) 
 	private static YahooFinanceAPI instance;
 	
 	
 	private YahooFinanceAPI() 
 	{
-		// TODO Auto-generated constructor stub
+		//Private constructor.  Singleton.
 	}
 	
+	//Implements Singleton Design Pattern, by returning only one shared instance of itself at a time.
 	public static YahooFinanceAPI getInstance()
 	{
 		
@@ -36,7 +47,17 @@ public class YahooFinanceAPI
 			return instance;
 	}
 		
-	public boolean fetchAndParseShare(ShareSet object) throws IOException, MalformedURLException
+	/**
+	 * Queries the Yahoo Finance API for current stock data on the passed Stock object,
+	 * parses it and populates the stock object.
+	 * 
+	 * @param ShareSet stock
+	 * @return true if successful
+	 * @throws IOException
+	 * @throws MalformedURLException
+	 * Throws exceptions to notify UI to display "No Feed Available"
+	 */
+	public boolean fetchAndParseShare(ShareSet stock) throws IOException, MalformedURLException
 	{
 		URL url;	//URL object to access Yahoo! Finance
 		/* 
@@ -48,7 +69,7 @@ public class YahooFinanceAPI
 		 * p = Previous Close Price
 		 * p2 = Change from Previous Close in Percent
 		 */
-		url = new URL("http://finance.yahoo.com/d/quotes.csv?s=" + object.getTicker() + ".L&f=t1l1ghvpp2"); 
+		url = new URL("http://finance.yahoo.com/d/quotes.csv?s=" + stock.getTicker() + ".L&f=t1l1ghvpp2"); 
 		
 		//connect to Yahoo! finance.
 		URLConnection urlConnection = url.openConnection();
@@ -79,7 +100,7 @@ public class YahooFinanceAPI
 		Double prevPrice = Double.parseDouble(rawTokens[5]) / 100;
 		String change = rawTokens[6].substring(1, rawTokens[6].length() - 1);
 		
-		object.setShareSet(stockTime, stockPrice, dailyHigh, dailyLow, volume, prevPrice, change);
+		stock.setShareSet(stockTime, stockPrice, dailyHigh, dailyLow, volume, prevPrice, change);
 		
 		//Return true flag for proper execution
 		return true;
@@ -87,6 +108,9 @@ public class YahooFinanceAPI
 		
 	}
 	
+	/**
+	 * Returns the time in the desired format as a String.
+	 */
 	public String timeParsing(String theTime)
 	{
 		//Compensate stock time for US time-zone
@@ -95,12 +119,15 @@ public class YahooFinanceAPI
 		return (Integer.toString(first) + ":" + sub[1]);
 	}
 
+	/**
+	 * Returns the date of last Friday's stock market close, in the appropriate date format.
+	 */
 	public String getLastFriday()
 	{
         Calendar cal = Calendar.getInstance();
-        cal.setFirstDayOfWeek(cal.MONDAY);
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
         cal.add(Calendar.WEEK_OF_YEAR, -1);
-        cal.set(Calendar.DAY_OF_WEEK, cal.FRIDAY);
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
 
@@ -118,17 +145,17 @@ public class YahooFinanceAPI
 	 * Check Out This here:
 	 * http://code.google.com/p/yahoo-finance-managed/wiki/csvHistQuotesDownload
 	 * 
-	 * @param companyTicker
-	 * @return
+	 * @param Stock object
+	 * @return true if successful
 	 */
-	public boolean fetchAndParseHistoryObject(ShareSet object) throws IOException, MalformedURLException
+	public boolean fetchAndParseHistoryObject(ShareSet stock) throws IOException, MalformedURLException
 
 	{
 
 		String[] dateTokens = (getLastFriday().split("/"));
 		int month = ( Integer.parseInt(dateTokens[1]) - 1);
 		
-		String url_text ="http://ichart.finance.yahoo.com/table.csv?s=" + object.getTicker() + 
+		String url_text ="http://ichart.finance.yahoo.com/table.csv?s=" + stock.getTicker() + 
 				".L&a="+ month +"&b="+ dateTokens[0]+"&c=20"+dateTokens[2]+"&d="+ month +"&e="+dateTokens[0]+"&f=20"+dateTokens[2]+"&g=d&ignore=.csv"; 
 		
 		 HttpClient client = new DefaultHttpClient();
@@ -155,7 +182,7 @@ public class YahooFinanceAPI
 		Double price = Double.parseDouble(data[4]) / 100;	//Divide by 100 to get in pounds 
 		Long volume = Long.parseLong(data[5]);
 		
-		object.setShareHistory(price, volume);
+		stock.setShareHistory(price, volume);
          
 		return true;
 		
