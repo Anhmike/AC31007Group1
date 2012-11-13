@@ -103,6 +103,11 @@ public class ShareSet
 		setPreviousWeekTotal();
 	}
 	
+	public void setChange(String theChange)
+	{
+		priceChange = theChange;
+	}
+	
 	/*
 	 * Set of get methods for the attributed of this class
 	 */

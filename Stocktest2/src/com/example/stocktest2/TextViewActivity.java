@@ -10,7 +10,6 @@ import android.text.Html;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TableRow.LayoutParams;
 
 
 public class TextViewActivity extends Activity
