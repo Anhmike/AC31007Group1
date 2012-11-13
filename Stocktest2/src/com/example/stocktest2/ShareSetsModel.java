@@ -20,7 +20,6 @@ import java.util.ArrayList;
  */
 public class ShareSetsModel 
 {
-	//Map<String, ShareSet> SHARES = new HashMap<String, ShareSet>();
 	ShareSet [] SHARES = new ShareSet[5];
 	
 	public ShareSetsModel() 
@@ -55,7 +54,7 @@ public class ShareSetsModel
 	public String calculateCurrentPortfolio() throws IOException, MalformedURLException
 
 	{
-		//local variables to and their initalised values.
+		//local variables to and their initialised values.
 		String text = "";
 		double totalPortfolio = 0;
 		String appTime = "";
@@ -65,7 +64,7 @@ public class ShareSetsModel
 		{
 			YahooFinanceAPI.getInstance().fetchAndParseShare(SHARES[i]);
 			totalPortfolio += SHARES[i].getTotal();
-		}//endfor
+		}
 		
 		appTime = SHARES[0].getTime();
 		
@@ -97,7 +96,7 @@ public class ShareSetsModel
 		{
 			YahooFinanceAPI.getInstance().fetchAndParseHistoryObject(SHARES[i]);
 			totalPortfolio += SHARES[i].getPreviousTotal();
-		}//endfor
+		}
 		
 		return ("\nThe total worth of your portfolio is<b> \u00A3" + (int)(Math.round(totalPortfolio))+ " </b> as of <b>" + YahooFinanceAPI.getInstance().getLastFriday() + "</b>.");
 	}
@@ -159,18 +158,27 @@ public class ShareSetsModel
 	 * @param - none.
 	 * @return - the value for each share in the list.
 	 */
-	public ArrayList<String> calculateShareTotals() throws IOException, MalformedURLException
-
+	public ArrayList<String> calculateShareTotals()
 	{
 		ArrayList <String> values = new ArrayList<String>();
 		for (int i=0; i<SHARES.length; i++)
 		{
-			YahooFinanceAPI.getInstance().fetchAndParseShare(SHARES[i]);
-			values.add(SHARES[i].getName());
-			values.add(String.valueOf(SHARES[i].getShares()));
-			values.add(String.valueOf(roundDouble(SHARES[i].getTotal())));
-			//list.add(SHARES[i].toString());
-		}//endfor
+			try 
+			{
+				YahooFinanceAPI.getInstance().fetchAndParseShare(SHARES[i]);
+				values.add(SHARES[i].getName());
+				values.add(String.valueOf(SHARES[i].getShares()));
+				values.add(String.valueOf(roundDouble(SHARES[i].getTotal())));
+
+			} 
+			catch (IOException e) 
+			{
+				//Add "Company name is currently unavailable" for specific unfetched stock
+				values.add(SHARES[i].getName());
+				values.add(String.valueOf(SHARES[i].getShares()));
+				values.add("N/A");
+			}		
+		}
 		
 		return values;
 	}

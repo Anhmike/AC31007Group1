@@ -77,16 +77,23 @@ public class YahooFinanceAPI
 		//Buffer the CSV file return from Yahoo!
 		BufferedInputStream csvBuffer = new BufferedInputStream(urlConnection.getInputStream());			
 		ByteArrayBuffer byteArray = new ByteArrayBuffer(100);
+		
 
 		//Append to byteArray until there is no more data (-1)
 		int current = 0;
-		while( (current = csvBuffer.read()) != -1)
+		int i = 0;
+		for ( i = 0; (current = csvBuffer.read()) != -1; i++)
 		{
 			byteArray.append((byte) current);
 		}
+		
+		String stockCSV = new String(byteArray.toByteArray());
+		
+		if (stockCSV.contains("N/A"))	
+			throw new IOException();
 
 		//Stores CVS into an unparsed string
-		String stockCSV = new String(byteArray.toByteArray());
+		
 		
 		//Split unparsed string into tokens at commas
 		String[] rawTokens = (stockCSV.split(","));
@@ -160,6 +167,7 @@ public class YahooFinanceAPI
 		
 		 HttpClient client = new DefaultHttpClient();
 		 HttpGet request = new HttpGet(url_text);
+		 
          // Get the response
          ResponseHandler<String> responseHandler = new BasicResponseHandler();
          String response_str = client.execute(request, responseHandler);

@@ -54,7 +54,7 @@ public class ShareSet
 	 * 			 curPrice: the current price of the share.
 	 * 			 dailyHigh: the highest price achieved by a stock in a single trade day.
 	 * 			 dailyLow : the lowest price achieved by a stock in a single trade day.
-	 * 			 Vol : the current volume of shares made avaliable for trading by that company.
+	 * 			 Vol : the current volume of shares made available for trading by that company.
 	 * 			 prevPrice : the previous close price of the stock.
 	 * 			 change : the change in price from the current stock value and the previous trade price.
 	 * 
@@ -76,12 +76,12 @@ public class ShareSet
 	//********************************************End of setShareSet 2.1*****************************************************************//
 	
 	
-	//********************************************Start of Individual mutators 2.2***********************************************************//
+	//********************************************Start of Individual Accessors & Mutators 2.2***********************************************************//
 	/*
 	 * setShareHistory - sets the previous friday close stock price.
 	 * getCurrentPrice - returns the current price of a share.
 	 * getTime - returns the current trade Timestamp.
-	 * getPreviousPrice - returns previous Price.
+	 * getPreviousPrice - returns price of stock as of last Friday's close.
 	 * getTotal - total value of the share set ie. no of share multiplied by share worth. 
 	 * getShares -  the quantity of shares owned in that set.
 	 * getName - name of the company for that share set.
@@ -227,7 +227,7 @@ public class ShareSet
     		else return 0; // Insufficient change for alert
     	}
     }
-  //********************************************End of Individual Mutators 2.2***********************************************************//
+  //********************************************End of Individual Accessors & Mutators 2.2***********************************************************//
     
     
     

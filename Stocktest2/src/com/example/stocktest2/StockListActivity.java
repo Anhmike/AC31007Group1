@@ -74,7 +74,7 @@ public class StockListActivity extends Activity
             {
                 dialog.dismiss();
                 
-                    //Set up a UI List
+                    //Set up a UI List dynamically at run time (not through XML file)
                 TableLayout table = (TableLayout) findViewById(R.id.table);
                 for(int i=0;i<list.size();i+=3)
                 {
