@@ -81,8 +81,7 @@ public class YahooFinanceAPI
 
 		//Append to byteArray until there is no more data (-1)
 		int current = 0;
-		int i = 0;
-		for ( i = 0; (current = csvBuffer.read()) != -1; i++)
+		while ((current = csvBuffer.read()) != -1)
 		{
 			byteArray.append((byte) current);
 		}
@@ -90,7 +89,7 @@ public class YahooFinanceAPI
 		String stockCSV = new String(byteArray.toByteArray());
 		
 		if (stockCSV.contains("N/A"))	
-			throw new IOException();
+			throw new IOException();//Stock is invalid
 
 		//Stores CVS into an unparsed string
 		

@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
+import org.junit.After;
+import org.junit.Before;
+
+import com.example.stocktest2.ShareSet;
 import com.example.stocktest2.ShareSetsModel;
 import com.example.stocktest2.YahooFinanceAPI;
 
@@ -14,12 +18,15 @@ public class TestPortfolio extends AndroidTestCase
 	private ShareSetsModel portfolioRight;
 	private ShareSetsModel portfolioWrong;
 	
-	public TestPortfolio() 
+	@Before
+	public void setUp() 
 	{
 		portfolioRight = new ShareSetsModel("TESCO", 122, "TSCO");
 		portfolioWrong = new ShareSetsModel("AAAA", 152, "AAAA");
 	}
-
+	
+	
+	
 	public void testWrongFridayPortfolio()
 	{
 		String result = "";
@@ -106,33 +113,14 @@ public class TestPortfolio extends AndroidTestCase
 		assertEquals(result, innerResult, delta);
 	}
 	
-	public void testWrongPlummetRocket()
-	{
-		String result = "";
-		try 
-		{ 
-			YahooFinanceAPI.getInstance().fetchAndParseShare(portfolioWrong.SHARES[0]);	//Get current price for stock
-			result = portfolioWrong.detectPlummetRocket();
-		} 
-		catch (MalformedURLException e) { } 
-		catch (IOException e) { }
-		assertEquals(result, "");
-	}
 	
-	public void testRightPlummetRocket()
+	
+	@After
+	public void tearDown() 
 	{
-		String result = "";
-		try 
-		{ 
-			YahooFinanceAPI.getInstance().fetchAndParseShare(portfolioRight.SHARES[0]);	//Get current price for stock
-			result = portfolioRight.detectPlummetRocket();
-		} 
-		catch (MalformedURLException e) { } 
-		catch (IOException e) { }
-		assertFalse(result == "");
+		portfolioRight = null;
+		portfolioWrong = null;
+		System.gc();
 	}
 }
 
-/*
-3.3 detectPlummetRocket - 
-*/
