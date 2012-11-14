@@ -5,11 +5,13 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.view.View;
@@ -368,7 +370,6 @@ public class MainActivity extends Activity
 		            
 		            
 		            
-		            
 		          //***************************************Start of onPostExecute 1.15***************************************************//
 			          /*
 			           * onPostExecute - Performs the actions of providing a bridge to the share total activities, or displaying a message if
@@ -403,7 +404,6 @@ public class MainActivity extends Activity
 				
 				
 				
-				
 				//Enable the button again
 				btnLostGained.setEnabled(true);
 			}
@@ -420,10 +420,9 @@ public class MainActivity extends Activity
      */
     public boolean checkInternetConnection()
     {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        
-        if (cm.getActiveNetworkInfo().isConnectedOrConnecting() == false)
+        if (cm.getActiveNetworkInfo() == null)
         {
         	return false;
         }	

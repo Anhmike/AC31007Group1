@@ -121,9 +121,14 @@ public class ShareSet
 		return LTtime;
 	}
 	
-	public double getPreviousPrice()
+	public double getPreviousClosePrice()
 	{
 		return previousClosePrice;
+	}
+	
+	public double getPreviousFridayPrice()
+	{
+		return previousFridayPrice;
 	}
 	
 	public double getTotal()
@@ -201,30 +206,36 @@ public class ShareSet
 
     public double getPlummetRocket()
     {
+    	Double result = Double.valueOf(-1.0);
     	//Take the percent off the end
-    	String change = priceChange.substring(0, priceChange.length() -1 );
-    	
-    	Double result;
-    	
-    	//Plummets
-    	if((change.charAt(0))=='-')
+    	if (priceChange == "")
     	{
-    		result = Double.parseDouble(change);
-    		if(result<= -20)
-    		{
-    			return (result);
-    		}
-    		else return 0; // Insufficient change for alert
+    		return result;
     	}
-    	//Rockets
-    	else
+        else
     	{
-    		result = Double.parseDouble(change);
-    		if(result>=10)
-    		{
-    			return result;
-    		}
-    		else return 0; // Insufficient change for alert
+	    	   String change = priceChange.substring(0, priceChange.length() -1 );
+
+	    		//Plummets
+		    	if((change.charAt(0))=='-')
+		    	{
+		    		result = Double.parseDouble(change);
+		    		if(result<= -20)
+		    		{
+		    			return (result);
+		    		}
+		    		else return 0; // Insufficient change for alert
+		    	}
+		    	//Rockets
+		    	else
+		    	{
+		    		result = Double.parseDouble(change);
+		    		if(result>=10)
+		    		{
+		    			return result;
+		    		}
+		    		else return 0; // Insufficient change for alert
+		    	}
     	}
     }
   //********************************************End of Individual Accessors & Mutators 2.2***********************************************************//
