@@ -1,0 +1,89 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="#d3a45e">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:paddingTop="20dp">
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/getTotal"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/round_button"
+                android:gravity="center_vertical|center_horizontal"
+                android:height="120dp"
+                android:padding="10dp"
+                android:text="@string/Total_Button"
+                android:textColor="#f3bf7f"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:width="120dp" />
+            <Button
+                android:id="@+id/getShares"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/round_button"
+                android:gravity="center_vertical|center_horizontal"
+                android:height="120dp"
+                android:padding="10dp"
+                android:text="@string/ShareSet_Worth"
+                android:textColor="#f3bf7f"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:width="120dp" />
+
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+            <Button
+                android:id="@+id/getLostGained"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/round_button"
+                android:gravity="center_vertical|center_horizontal"
+                android:height="120dp"
+                android:padding="10dp"
+                android:text="@string/Lost_Gained"
+                android:textColor="#f3bf7f"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:width="120dp" />
+
+            <Button
+                android:id="@+id/getBestWorst"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/round_button"
+                android:gravity="center_vertical|center_horizontal"
+                android:height="120dp"
+                android:padding="10dp"
+                android:text="@string/Best_Worst"
+                android:textColor="#f3bf7f"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:width="120dp" />
+
+        </TableRow>
+        
+    </TableLayout>
+
+    <TextView
+        android:id="@+id/textOutput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
+
+
+

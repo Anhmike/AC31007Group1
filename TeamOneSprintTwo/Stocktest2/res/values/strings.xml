@@ -1,0 +1,17 @@
+<resources>
+
+    <!-- App stuff -->
+    <string name="app_name">Stock Monitor</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">Stock Monitor</string>
+    
+    <!-- UI strings -->
+	<string name="Total_Button">Total Portfolio</string>
+	<string name="ShareSet_Worth">Shares Worth</string>
+	<string name="Lost_Gained">Lost / Gained</string>
+	<string name="Best_Worst">Best / Worst</string>
+	<string name="list_activity_name">Portfolio Summary</string>
+	<string name="total_portfolio_name">Total Portoflio</string>
+
+
+</resources>
