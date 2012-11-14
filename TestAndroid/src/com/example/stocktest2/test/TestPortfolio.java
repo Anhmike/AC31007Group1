@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import org.junit.After;
 import org.junit.Before;
 
-import com.example.stocktest2.ShareSet;
 import com.example.stocktest2.ShareSetsModel;
 import com.example.stocktest2.YahooFinanceAPI;
 
